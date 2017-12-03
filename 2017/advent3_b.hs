@@ -7,8 +7,6 @@ import Prelude hiding (Left, Right)
 import System.Environment
 import qualified Data.Map as M
 
-import Debug.Trace
-
 data Dir = Up
          | Left
          | Down
@@ -33,7 +31,7 @@ coords :: Int                    -- ^ target value
        -> Int                    -- ^ increment
        -> Int                    -- ^ current step in this increment
        -> (Int, Int)             -- ^ current coord
-       -> Dir                    -- ^ Direction to move in
+       -> Dir                    -- ^ direction to move in
        -> Int                    -- ^ count to see when we need to increase the increment
        -> M.Map (Int, Int) Int   -- ^ mapping coordinates to values
        -> Int                    -- ^ first value that is larger than the target
