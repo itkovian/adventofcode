@@ -6,7 +6,6 @@ fn walk(digits: &mut Vec<i32>) -> u32 {
 
     let mut c : u32 = 0;
     let mut index = 0;
-    let upper = digits.len() - 1;
 
     while let Some(inc) = digits.get_mut(index) {
 
