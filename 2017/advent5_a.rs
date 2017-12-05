@@ -8,20 +8,16 @@ fn walk(digits: &mut Vec<i32>) -> u32 {
     let mut index = 0;
     let upper = digits.len() - 1;
 
-    loop {
+    while let Some(inc) = digits.get_mut(index) {
 
-        let inc = digits[index];
-        digits[index] += 1;
-
-        println!("c: {}, upper: {}, index: {}, digit: {}, new digit: {}", c, upper, index, inc, digits[index]);
-
-        if inc >= 0 {
-            index = index + inc as usize;
+        if *inc >= 0 {
+            index = index + *inc as usize;
         }
         else {
             index = index - inc.abs() as usize;
         }
 
+        *inc += 1;
         c += 1;
     }
     c

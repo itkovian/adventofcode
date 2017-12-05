@@ -7,27 +7,18 @@ fn walk(digits: &mut Vec<i32>) -> u32 {
     let mut c : u32 = 0;
     let mut index = 0;
 
-    loop {
+    while let Some(i) = digits.get_mut(index) {
+        if *i>= 0 {
+            index = index + *i as usize;
+        }
+        else {
+            index = index - i.abs() as usize;
+        }
 
-        let inc = digits.get_mut(index);
-        match inc {
-            Some(i) =>  {
-                if *i>= 0 {
-                    index = index + *i as usize;
-                }
-                else {
-                    index = index - i.abs() as usize;
-                }
-
-                if *i >= 3 {
-                    *i -= 1;
-                } else {
-                    *i += 1;
-                }
-             },
-            None => {
-                break;
-            }
+        if *i >= 3 {
+            *i -= 1;
+        } else {
+            *i += 1;
         }
         c += 1;
     }
