@@ -4,7 +4,7 @@ module Main where
 
 import           Control.Applicative
 import           Control.Monad
-import qualified Data.Map.Strict as M
+import qualified Data.Map.Strict     as M
 import           Data.Maybe
 type Register = String
 
