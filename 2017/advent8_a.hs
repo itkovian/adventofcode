@@ -44,6 +44,6 @@ main = do
 
     input <- lines <$> getContents
     let instructions = map parse input
-    let m = foldr process (0, M.empty) $ reverse instructions
+    let (h, m) = foldr process (0, M.empty) $ reverse instructions
 
-    print m
+    print (h, maximum $ M.elems m)
