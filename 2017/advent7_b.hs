@@ -1,32 +1,31 @@
 module Main where
 
 import           Control.Applicative
+import           Control.Arrow        (second)
 import           Data.List            (sort, groupBy)
 import           Data.List.Split      (splitOn)
 import           Data.Maybe
 import qualified Data.Set             as S
 import qualified Data.Map.Strict      as M
 
-import Debug.Trace
-
 type ProgramMap = M.Map String (Int, S.Set String)
 
 -- | A topological sort that takes ordering of the available leaves into account
 topologicalSort :: ProgramMap -> [String]
-topologicalSort m = tsort [] (let l = getLeaves m in {-trace ("leaves: "  ++ show l)-} l) m
+topologicalSort m = tsort [] (let l = getLeaves m in l) m
   where getLeaves :: ProgramMap -> S.Set String
         getLeaves m = S.fromList $ M.keys $ M.filter (S.null . snd) m
 
         tsort :: [String] -> S.Set String -> ProgramMap -> [String]
         tsort s leaves m | S.null leaves = reverse s
-        tsort s leaves m = tsort (l:s) (let l = leaves' in {-trace ("leaves: " ++ show l)-} l) m'
+        tsort s leaves m = tsort (l:s) (let l = leaves' in l) m'
           where l = S.findMin leaves
                 m' = removeLeaf m l
                 leaves' = getLeaves m'
 
 removeLeaf :: ProgramMap -> String -> ProgramMap
 removeLeaf m l = let (m', m'') =  M.partition (S.member l . snd) m
-                 in M.delete l $ M.union m'' $ M.map (\(t, xs) -> (t, S.delete l xs)) m'
+                 in M.delete l $ M.union m'' $ M.map (second (S.delete l)) m'
 
 isLeaf :: ProgramMap -> String -> Bool
 isLeaf m p = S.null . snd . fromJust $ M.lookup p m
@@ -62,8 +61,6 @@ reduction ws cs pm =
         then cw + maxw - minw
         else cw - maxw + minw
 
-
-
 insertWeights :: ProgramMap -> String -> M.Map String Int -> M.Map String Int
 insertWeights pm p m =
     let (w, children) = fromJust $ M.lookup p pm
@@ -75,9 +72,7 @@ insertWeights pm p m =
                 then M.insert p (w + sum ws) m
                 else trace ("Found the culpit with adjusted weight " ++ show (reduction ws children' pm)) $ m
 
-
 main = do
-
     inputs <- (map parse . lines) <$> getContents
 
     let towerMap = foldl insertPartialTower M.empty inputs
