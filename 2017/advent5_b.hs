@@ -3,15 +3,16 @@
 module Main where
 
 import           Control.Applicative
-import qualified Data.IntMap         as M
+import qualified Data.IntMap.Strict      as M
 
 update :: Int -> Int -> Maybe Int
 update _ index = if index >= 3 then Just (index - 1) else Just (index + 1)
+{-# INLINE update #-}
 
-solve :: Int     -- ^ counter
-      -> Int     -- ^ index
+solve :: Int            -- ^ counter
+      -> Int            -- ^ index
       -> M.IntMap Int   -- ^ array
-      -> Int
+      -> Int            -- ^ final count when we go out of bounds
 solve !c !i !m =
     case M.updateLookupWithKey update i m of
         (Nothing, _) -> c
