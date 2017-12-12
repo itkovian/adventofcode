@@ -5,7 +5,8 @@
 module Main where
 
 import Control.Applicative
-import Data.List.Split   (splitOn)
+import Data.List            (foldl')
+import Data.List.Split      (splitOn)
 
 data Dir = North
          | South
@@ -36,14 +37,14 @@ move' (x, y, z) SouthEast = (x + 1, y + (-1), z + 0)
 move :: ((Int, Int, Int), Int) -> Dir -> ((Int, Int, Int), Int)
 move (pos, m) d =
     let pos'@(x, y, z) = move' pos d
-        m' = abs x + abs y + abs z
-    in (pos', max m m')
+        m' = max (abs x + abs y + abs z) m
+    in m' `seq` (pos', m')
 
 main :: IO ()
 main = do
 
     ms <- (map read . splitOn ",") <$> getContents :: IO [Dir]
 
-    let ((final_x, final_y, final_z), m) = foldl move ((0, 0, 0), 0) ms
+    let ((final_x, final_y, final_z), m) = foldl' move ((0, 0, 0), 0) ms
 
     print ((abs final_x + abs final_y + abs final_z) `div` 2, m `div` 2)
