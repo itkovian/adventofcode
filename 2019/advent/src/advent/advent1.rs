@@ -19,8 +19,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+use std::fs::File;
 use std::io::prelude::*;
-use std::io::stdin;
+use std::io::BufReader;
 
 fn fuel(mass: i32) -> i32 {
     f64::floor(mass as f64 / 3.0)  as i32 - 2
@@ -65,17 +66,15 @@ fn fuel_for_fuel2(mass: i32) -> i32 {
     f.fold(0, |acc, f| acc + f)
 }
 
-pub fn advent1a() -> () {
-    let sum = stdin()
-        .lock()
+pub fn advent1a(p: &mut BufReader<File>) -> () {
+    let sum = p
         .lines()
         .fold(0, |acc, l| acc + fuel(l.unwrap().trim().parse::<i32>().unwrap()));
     println!("Sum of fuel usage: {:?}", sum);
 }
 
-pub fn advent1b() -> () {
-    let sum = stdin()
-        .lock()
+pub fn advent1b(p: &mut BufReader<File>) -> () {
+    let sum = p
         .lines()
         .fold(0, |acc, l| acc + fuel_for_fuel(l.unwrap().trim().parse::<i32>().unwrap()));
     println!("Sum of fuel usage: {:?}", sum);

@@ -25,11 +25,14 @@ mod advent;
 use advent::*;
 use clap::{App, Arg};
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::BufReader;
+use std::path::Path;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
-type Callback = fn() -> ();
+type Callback = fn(&mut BufReader<File>) -> ();
 
-fn not_started() -> () {
+fn not_started(bf: &mut BufReader<File>) -> () {
     println!("Please solve something.");
 }
 
@@ -46,19 +49,34 @@ fn main() {
                 .default_value("0")
                 .help("Exercise to execute")
         )
+        .arg(
+            Arg::with_name("inputs_dir")
+                .long("inputs")
+                .takes_value(true)
+                .default_value("input")
+                .help("Location of the input files")
+        )
         .get_matches();
 
-    let mut adventMap : HashMap<&str, Callback> = HashMap::new();
+    let mut advent_map : HashMap<&str, Callback> = HashMap::new();
+    let advent_ex = matches.value_of("day").unwrap();
+    let input_path = Path::join(
+        Path::new(matches.value_of("inputs_dir").unwrap()),
+        format!("{}.input", advent_ex)
+    );
 
-    adventMap.insert("0", not_started);
-    adventMap.insert("1a", advent1::advent1a);
-    adventMap.insert("1b", advent1::advent1b);
+    let input_file = File::open(&input_path).expect(&format!("Cannot open input file: {:?}", input_path));
+    let mut reader = BufReader::new(input_file);
+
+    advent_map.insert("0", not_started);
+    advent_map.insert("1a", advent1::advent1a);
+    advent_map.insert("1b", advent1::advent1b);
 
     println!("Hello, advent of code!");
-    match adventMap.get(matches.value_of("day").unwrap()) {
-        Some(f) => f(),
+    match advent_map.get(advent_ex) {
+        Some(f) => f(&mut reader),
         None => {
-            println!("No solution yet for {}", matches.value_of("day").unwrap())
+            println!("No solution yet for {}", advent_ex);
         }
     }
 
