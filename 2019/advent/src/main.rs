@@ -32,7 +32,7 @@ use std::path::Path;
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 type Callback = fn(&mut BufReader<File>) -> ();
 
-fn not_started(bf: &mut BufReader<File>) -> () {
+fn not_started(_bf: &mut BufReader<File>) -> () {
     println!("Please solve something.");
 }
 
@@ -71,6 +71,8 @@ fn main() {
     advent_map.insert("0", not_started);
     advent_map.insert("1a", advent1::advent1a);
     advent_map.insert("1b", advent1::advent1b);
+    advent_map.insert("2a", advent2::advent2a);
+    advent_map.insert("2b", advent2::advent2b);
 
     println!("Hello, advent of code!");
     match advent_map.get(advent_ex) {
