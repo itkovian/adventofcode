@@ -47,15 +47,17 @@ fn compute(instr: &mut Vec<usize>, pos: usize) -> Vec<usize> {
     //instr.to_vec()
 }
 
-pub fn advent2a(p: &mut BufReader<File>) -> () {
-
+fn read(p: &mut BufReader<File>) -> Vec<usize> {
     let mut program = String::new();
     p.read_line(& mut program).expect("Cannot read input line");
-    let mut instr = program
+    program
         .split(',')
         .map(|s| s.parse::<usize>().unwrap())
-        .collect::<Vec<usize>>();
+        .collect::<Vec<usize>>()
+}
 
+pub fn advent2a(p: &mut BufReader<File>) -> () {
+    let mut instr = read(p);
     instr[1] = 12;
     instr[2] = 2;
 
@@ -67,12 +69,7 @@ pub fn advent2a(p: &mut BufReader<File>) -> () {
 
 pub fn  advent2b(p: &mut BufReader<File>) {
 
-    let mut program = String::new();
-    p.read_line(&mut program).expect("Cannot read input line");
-    let instr = program
-        .split(',')
-        .map(|s| s.parse::<usize>().unwrap())
-        .collect::<Vec<usize>>();
+    let instr = read(p);
 
     for noun in 0..100 {
         for verb  in 0..100 {
