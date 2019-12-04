@@ -87,8 +87,6 @@ Here are the initial and final states of a few more small programs:
 1,1,1,4,99,5,6,0,99 becomes 30,1,1,4,2,5,6,0,99.
 Once you have a working computer, the first step is to restore the gravity assist program (your puzzle input) to the "1202 program alarm" state it had just before the last computer caught fire. To do this, before running the program, replace position 1 with the value 12 and replace position 2 with the value 2. What value is left at position 0 after the program halts?
 
-Your puzzle answer was 3166704.
-
 ### Part 2
 
 "Good, the new computer seems to be working correctly! Keep it nearby during this mission - you'll probably use it again. Real Intcode computers support many more features than your new one, but we'll let you know what they are as you need them."
@@ -152,8 +150,6 @@ U62,R66,U55,R34,D71,R55,D58,R83 = distance 159
 R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
 U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = distance 135
 What is the Manhattan distance from the central port to the closest intersection?
-
-Your puzzle answer was 2427.
 
 ### Part 2
 
