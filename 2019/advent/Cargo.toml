@@ -11,3 +11,4 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 clap = "2.33"
+itertools = "0.8.1"

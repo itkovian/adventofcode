@@ -75,6 +75,8 @@ fn main() {
     advent_map.insert("2b", advent2::advent2b);
     advent_map.insert("3a", advent3::advent3a);
     advent_map.insert("3b", advent3::advent3b);
+    advent_map.insert("4a", advent4::advent4a);
+    advent_map.insert("4b", advent4::advent4b);
 
     println!("Hello, advent of code!");
     match advent_map.get(advent_ex) {
