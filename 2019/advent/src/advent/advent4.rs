@@ -45,22 +45,20 @@ fn digits(v: i32) -> Vec<i32> {
     ds
 }
 
-fn check_value_a(v: i32) -> bool {
+fn check_value_a(v: i32) -> (bool, Vec<i32>) {
     let ds = digits(v);
     let mut equal = false;
-    let mut order = true;
     for i in 0..5 {
         if ds[i] == ds[i+1] { equal = true; }
-        if ds[i] < ds[i+1] { order = false; }
+        if ds[i] < ds[i+1] { return (false, ds); }
     }
-    order && equal
+    (equal, ds)
 }
 
 fn check_value_b(v: i32) -> bool {
 
-    let a = check_value_a(v);
-    if a {
-        let ds = digits(v);
+    let (a, ds) = check_value_a(v);
+    a && {
         let group_sizes : HashSet<usize> = ds.iter()
             .group_by(|e| **e)
             .into_iter()
@@ -68,11 +66,10 @@ fn check_value_b(v: i32) -> bool {
             .collect::<HashSet<usize>>();
 
         match group_sizes.get(&2) {
-            Some(_) => return true,
-            None => return false
+            Some(_) => true,
+            None => false
         }
     }
-    false
 }
 
 pub fn advent4a(p: &mut BufReader<File>) -> () {
@@ -83,7 +80,7 @@ pub fn advent4a(p: &mut BufReader<File>) -> () {
 
     let mut count = 0;
     for v in lower .. (upper + 1) {
-        if check_value_a(v) {
+        if check_value_a(v).0 {
             count += 1;
         }
     }
@@ -121,9 +118,9 @@ mod tests {
 
     #[test]
     fn test_check_value_a() {
-        assert_eq!(check_value_a(111111), true);
-        assert_eq!(check_value_a(123456), false);
-        assert_eq!(check_value_a(122345), true);
+        assert_eq!(check_value_a(111111).0, true);
+        assert_eq!(check_value_a(123456).0, false);
+        assert_eq!(check_value_a(122345).0, true);
     }
 
     #[test]
