@@ -10,5 +10,8 @@ keywords = ["code", "contest"]
 categories = ["command-line-utilities"]
 
 [dependencies]
+chrono = { version = "0.4.10", features = ["serde"] }
 clap = "2.33"
 itertools = "0.8.1"
+fern = { version = "0.5.9" }
+log  = "^0.4"
