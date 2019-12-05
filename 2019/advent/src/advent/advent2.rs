@@ -23,25 +23,23 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-
 fn compute(instr: &mut Vec<usize>, pos: usize) -> Vec<usize> {
-
     if instr[pos] == 99 {
         return instr.to_vec();
     }
-    match instr[pos .. pos+4] {
+    match instr[pos..pos + 4] {
         [opcode, op1_pos, op2_pos, res_pos] => {
             let op1 = instr[op1_pos];
             let op2 = instr[op2_pos];
             let res = match opcode {
                 1 => op1 + op2,
                 2 => op1 * op2,
-                _ => panic!("Unexpected opcode {}", opcode)
+                _ => panic!("Unexpected opcode {}", opcode),
             };
             instr[res_pos] = res;
-            return compute(instr, pos + 4)
+            return compute(instr, pos + 4);
         }
-        _ => panic!("Computer says no!")
+        _ => panic!("Computer says no!"),
     };
 
     //instr.to_vec()
@@ -49,7 +47,7 @@ fn compute(instr: &mut Vec<usize>, pos: usize) -> Vec<usize> {
 
 fn read(p: &mut BufReader<File>) -> Vec<usize> {
     let mut program = String::new();
-    p.read_line(& mut program).expect("Cannot read input line");
+    p.read_line(&mut program).expect("Cannot read input line");
     program
         .split(',')
         .map(|s| s.parse::<usize>().unwrap())
@@ -61,28 +59,25 @@ pub fn advent2a(p: &mut BufReader<File>) -> () {
     instr[1] = 12;
     instr[2] = 2;
 
-    let instr_ = compute(& mut instr, 0);
+    let instr_ = compute(&mut instr, 0);
 
     println!("Position 0 after halt: {}", instr_[0]);
 }
 
-
-pub fn  advent2b(p: &mut BufReader<File>) {
-
+pub fn advent2b(p: &mut BufReader<File>) {
     let instr = read(p);
 
     for noun in 0..100 {
-        for verb  in 0..100 {
+        for verb in 0..100 {
             let mut instr_ = instr.clone();
             instr_[1] = noun;
             instr_[2] = verb;
-            if compute(& mut instr_, 0)[0] == 19690720 {
+            if compute(&mut instr_, 0)[0] == 19690720 {
                 println!("The input should be {}", 100 * noun + verb);
                 return;
             }
         }
     }
-
 }
 
 #[cfg(test)]
@@ -92,10 +87,15 @@ mod tests {
 
     #[test]
     fn test_computer() {
-        assert_eq!(compute(& mut vec![1,0,0,0,99], 0), vec![2,0,0,0,99]);
-        assert_eq!(compute(& mut vec![2,3,0,3,99], 0), vec![2,3,0,6,99]);
-        assert_eq!(compute(& mut vec![2,4,4,5,99,0], 0), vec![2,4,4,5,99,9801]);
-        assert_eq!(compute(& mut vec![1,1,1,4,99,5,6,0,99], 0), vec![30,1,1,4,2,5,6,0,99]);
+        assert_eq!(compute(&mut vec![1, 0, 0, 0, 99], 0), vec![2, 0, 0, 0, 99]);
+        assert_eq!(compute(&mut vec![2, 3, 0, 3, 99], 0), vec![2, 3, 0, 6, 99]);
+        assert_eq!(
+            compute(&mut vec![2, 4, 4, 5, 99, 0], 0),
+            vec![2, 4, 4, 5, 99, 9801]
+        );
+        assert_eq!(
+            compute(&mut vec![1, 1, 1, 4, 99, 5, 6, 0, 99], 0),
+            vec![30, 1, 1, 4, 2, 5, 6, 0, 99]
+        );
     }
-
 }

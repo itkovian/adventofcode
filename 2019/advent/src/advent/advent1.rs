@@ -24,7 +24,7 @@ use std::io::prelude::*;
 use std::io::BufReader;
 
 fn fuel(mass: i32) -> i32 {
-    f64::floor(mass as f64 / 3.0)  as i32 - 2
+    f64::floor(mass as f64 / 3.0) as i32 - 2
 }
 
 fn fuel_for_fuel(mass: i32) -> i32 {
@@ -42,23 +42,21 @@ fn fuel_for_fuel(mass: i32) -> i32 {
 }
 
 struct Fuel {
-    mass: i32
+    mass: i32,
 }
 
 impl Iterator for Fuel {
     type Item = i32;
 
     fn next(&mut self) -> Option<i32> {
-
         let f = fuel(self.mass);
         if f > 0 {
             self.mass = f;
             Some(f)
-        } else  {
+        } else {
             None
         }
     }
-
 }
 
 fn fuel_for_fuel2(mass: i32) -> i32 {
@@ -67,16 +65,16 @@ fn fuel_for_fuel2(mass: i32) -> i32 {
 }
 
 pub fn advent1a(p: &mut BufReader<File>) -> () {
-    let sum = p
-        .lines()
-        .fold(0, |acc, l| acc + fuel(l.unwrap().trim().parse::<i32>().unwrap()));
+    let sum = p.lines().fold(0, |acc, l| {
+        acc + fuel(l.unwrap().trim().parse::<i32>().unwrap())
+    });
     println!("Sum of fuel usage: {:?}", sum);
 }
 
 pub fn advent1b(p: &mut BufReader<File>) -> () {
-    let sum = p
-        .lines()
-        .fold(0, |acc, l| acc + fuel_for_fuel(l.unwrap().trim().parse::<i32>().unwrap()));
+    let sum = p.lines().fold(0, |acc, l| {
+        acc + fuel_for_fuel(l.unwrap().trim().parse::<i32>().unwrap())
+    });
     println!("Sum of fuel usage: {:?}", sum);
 }
 
@@ -108,5 +106,4 @@ mod tests {
         assert_eq!(fuel_for_fuel2(1969), 966);
         assert_eq!(fuel_for_fuel2(100756), 50346);
     }
-
 }
