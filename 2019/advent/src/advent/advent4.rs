@@ -26,22 +26,24 @@ use std::io::prelude::*;
 use std::io::BufReader;
 
 fn range(p: &mut BufReader<File>) -> (i32, i32) {
-
     let mut range_line = String::new();
-    p.read_line(& mut range_line).unwrap();
-    let rs : Vec<i32> = range_line.trim().split("-").map(|v| v.parse::<i32>().unwrap()).collect();
+    p.read_line(&mut range_line).unwrap();
+    let rs: Vec<i32> = range_line
+        .trim()
+        .split("-")
+        .map(|v| v.parse::<i32>().unwrap())
+        .collect();
     (rs[0], rs[1])
 }
 
 fn digits(v: i32) -> Vec<i32> {
-
     let mut v_ = v;
     let mut ds = Vec::new();
     for _ in 0..6 {
         let d = v_ % 10;
         ds.push(d);
         v_ = v_ / 10;
-    };
+    }
     ds
 }
 
@@ -49,17 +51,21 @@ fn check_value_a(v: i32) -> (bool, Vec<i32>) {
     let ds = digits(v);
     let mut equal = false;
     for i in 0..5 {
-        if ds[i] == ds[i+1] { equal = true; }
-        if ds[i] < ds[i+1] { return (false, ds); }
+        if ds[i] == ds[i + 1] {
+            equal = true;
+        }
+        if ds[i] < ds[i + 1] {
+            return (false, ds);
+        }
     }
     (equal, ds)
 }
 
 fn check_value_b(v: i32) -> bool {
-
     let (a, ds) = check_value_a(v);
     a && {
-        let group_sizes : HashSet<usize> = ds.iter()
+        let group_sizes: HashSet<usize> = ds
+            .iter()
             .group_by(|e| **e)
             .into_iter()
             .map(|(_, group)| group.cloned().collect::<Vec<i32>>().len())
@@ -67,19 +73,18 @@ fn check_value_b(v: i32) -> bool {
 
         match group_sizes.get(&2) {
             Some(_) => true,
-            None => false
+            None => false,
         }
     }
 }
 
 pub fn advent4a(p: &mut BufReader<File>) -> () {
-
     let (lower, upper) = range(p);
 
     println!("Range: {} to  {}", lower, upper);
 
     let mut count = 0;
-    for v in lower .. (upper + 1) {
+    for v in lower..(upper + 1) {
         if check_value_a(v).0 {
             count += 1;
         }
@@ -89,13 +94,12 @@ pub fn advent4a(p: &mut BufReader<File>) -> () {
 }
 
 pub fn advent4b(p: &mut BufReader<File>) -> () {
-
     let (lower, upper) = range(p);
 
     println!("Range: {} to  {}", lower, upper);
 
     let mut count = 0;
-    for v in lower .. (upper + 1) {
+    for v in lower..(upper + 1) {
         if check_value_b(v) {
             count += 1;
         }
@@ -103,8 +107,6 @@ pub fn advent4b(p: &mut BufReader<File>) -> () {
 
     println!("We found {} potential values", count);
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -124,10 +126,9 @@ mod tests {
     }
 
     #[test]
-    fn  test_check_value_b() {
+    fn test_check_value_b() {
         assert_eq!(check_value_b(112233), true);
         assert_eq!(check_value_b(123444), false);
         assert_eq!(check_value_b(111122), true);
     }
-
 }

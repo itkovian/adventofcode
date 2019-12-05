@@ -54,7 +54,6 @@ fn setup_logging(level: log::LevelFilter) -> Result<(), log::SetLoggerError> {
 }
 
 fn main() {
-
     let matches = App::new("advent")
         .version(VERSION)
         .author("Andy Georges")
@@ -64,33 +63,38 @@ fn main() {
                 .long("day")
                 .takes_value(true)
                 .default_value("0")
-                .help("Exercise to execute")
+                .help("Exercise to execute"),
         )
         .arg(
             Arg::with_name("inputs_dir")
                 .long("inputs")
                 .takes_value(true)
                 .default_value("input")
-                .help("Location of the input files")
+                .help("Location of the input files"),
         )
         .arg(
             Arg::with_name("debug")
                 .long("debug")
-                .help("Output debug information. Default log level is WARN")
+                .help("Output debug information. Default log level is WARN"),
         )
         .get_matches();
 
-    let loglevel = if matches.is_present("debug") { log::LevelFilter::Debug } else { log::LevelFilter::Warn };
+    let loglevel = if matches.is_present("debug") {
+        log::LevelFilter::Debug
+    } else {
+        log::LevelFilter::Warn
+    };
     setup_logging(loglevel).expect("Cannot set up logging");
 
-    let mut advent_map : HashMap<&str, Callback> = HashMap::new();
+    let mut advent_map: HashMap<&str, Callback> = HashMap::new();
     let advent_ex = matches.value_of("day").unwrap();
     let input_path = Path::join(
         Path::new(matches.value_of("inputs_dir").unwrap()),
-        format!("{}.input", advent_ex)
+        format!("{}.input", advent_ex),
     );
 
-    let input_file = File::open(&input_path).expect(&format!("Cannot open input file: {:?}", input_path));
+    let input_file =
+        File::open(&input_path).expect(&format!("Cannot open input file: {:?}", input_path));
     let mut reader = BufReader::new(input_file);
 
     advent_map.insert("0", not_started);
@@ -112,5 +116,4 @@ fn main() {
             println!("No solution yet for {}", advent_ex);
         }
     }
-
 }
